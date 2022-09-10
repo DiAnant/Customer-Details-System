@@ -22,13 +22,13 @@ public class CustomerController {
     CustomerService customerService;
 
     @RequestMapping(value = "/customers", method = RequestMethod.GET)
-    public List<Customer> getAllCustomers(){
+    public ResponseEntity<List<Customer>> getAllCustomers(){
         return customerService.getAllCustomers();
     }
 
     @RequestMapping(value = "/customers", method = RequestMethod.POST)
-    public void createCustomer(@RequestBody Customer customer){
-        customerService.createCustomer(customer);
+    public ResponseEntity<String> createCustomer(@RequestBody Customer customer){
+        return customerService.createCustomer(customer);
     }
 
     @RequestMapping(value = "/customers/{id}", method = RequestMethod.GET)

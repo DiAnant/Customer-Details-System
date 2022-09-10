@@ -9,6 +9,5 @@ import com.cognizant.customer_detail_system.model.User;
 @Repository
 public interface UserRepository extends JpaRepository<User, Long>{
     
-
     Optional<User> findByUsername(String username);
 }

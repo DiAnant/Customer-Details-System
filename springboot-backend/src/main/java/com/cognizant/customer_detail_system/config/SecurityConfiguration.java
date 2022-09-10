@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.*;
@@ -76,6 +77,7 @@ public class SecurityConfiguration{
 }
  */
 
+ @EnableWebSecurity
  public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
 
     @Autowired
@@ -91,6 +93,8 @@ public class SecurityConfiguration{
         http.csrf().disable().
         authorizeRequests().        
         antMatchers(HttpMethod.POST, "/api/v1/customers/", "/api/v1/customers").hasAuthority("ADMIN").
+        antMatchers(HttpMethod.POST, "/api/v2/user/", "/api/v2/user").hasAnyAuthority("CUSTOMER", "ADMIN").
+        antMatchers(HttpMethod.GET, "/api/v2/user/", "/api/v2/user").hasAnyAuthority("CUSTOMER", "ADMIN").
         antMatchers(HttpMethod.GET, "/api/v1/customers/", "/api/v1/customers").hasAnyAuthority("CUSTOMER", "ADMIN").
         anyRequest().
         authenticated().

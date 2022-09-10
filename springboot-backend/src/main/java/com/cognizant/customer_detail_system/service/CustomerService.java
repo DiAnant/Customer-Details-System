@@ -17,13 +17,14 @@ public class CustomerService {
     @Autowired
     private CustomerRepository customerRepository;
 
-    public List<Customer> getAllCustomers(){
-        return customerRepository.findAll();
+    public ResponseEntity<List<Customer>> getAllCustomers(){
+        return ResponseEntity.ok(customerRepository.findAll());
     }
 
-    public void createCustomer(Customer customer){
+    public ResponseEntity<String> createCustomer(Customer customer){
         customer.setCustomer_creation_date(LocalDate.now());
         customerRepository.save(customer); 
+        return ResponseEntity.ok("Customer Record Saved Successfully!");
     }
 
     public ResponseEntity<Customer> getCustomerById(Long id) throws ResourceNotFoundException{
