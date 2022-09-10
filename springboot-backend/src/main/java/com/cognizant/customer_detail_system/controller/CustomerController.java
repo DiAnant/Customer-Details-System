@@ -13,29 +13,28 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.cognizant.customer_detail_system.exception.ResourceNotFoundException;
 import com.cognizant.customer_detail_system.model.Customer;
-import com.cognizant.customer_detail_system.model.User;
 import com.cognizant.customer_detail_system.repository.CustomerRepository;
 
 @CrossOrigin(origins = "http://localhost:3000/")
 @RestController
-@RequestMapping("api/v1")
+@RequestMapping("/api/v1")
 public class CustomerController {
     
     @Autowired
     private CustomerRepository customerRepository;
 
-    @RequestMapping(value = "/", method = RequestMethod.POST)
-    public boolean login(@RequestBody User userdata){   
+    // @RequestMapping(value = "/", method = RequestMethod.POST)
+    // public boolean login(@RequestBody User userdata){   
         
-        // we can eventually fetch it from the database or something
-        User user1 = new User("anant", "password");
+    //     // we can eventually fetch it from the database or something
+    //     User user1 = new User("anant", "password");
         
-        if(!userdata.getUsername().equals(user1.getUsername()))
-            return false;
-        if(!userdata.getPassword().equals(user1.getPassword()))
-            return false;
-        return true;
-    }
+    //     if(!userdata.getUsername().equals(user1.getUsername()))
+    //         return false;
+    //     if(!userdata.getPassword().equals(user1.getPassword()))
+    //         return false;
+    //     return true;
+    // }
 
     @RequestMapping(value = "/customers", method = RequestMethod.GET)
     public List<Customer> getAllCustomers(){
