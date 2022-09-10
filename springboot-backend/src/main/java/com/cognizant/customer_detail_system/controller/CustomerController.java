@@ -1,5 +1,4 @@
 package com.cognizant.customer_detail_system.controller;
-import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,9 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.cognizant.customer_detail_system.exception.ResourceNotFoundException;
 import com.cognizant.customer_detail_system.model.Customer;
-import com.cognizant.customer_detail_system.repository.CustomerRepository;
+import com.cognizant.customer_detail_system.service.CustomerService;
 
 @CrossOrigin(origins = "http://localhost:3000/")
 @RestController
@@ -21,83 +19,35 @@ import com.cognizant.customer_detail_system.repository.CustomerRepository;
 public class CustomerController {
     
     @Autowired
-    private CustomerRepository customerRepository;
-
-    // @RequestMapping(value = "/", method = RequestMethod.POST)
-    // public boolean login(@RequestBody User userdata){   
-        
-    //     // we can eventually fetch it from the database or something
-    //     User user1 = new User("anant", "password");
-        
-    //     if(!userdata.getUsername().equals(user1.getUsername()))
-    //         return false;
-    //     if(!userdata.getPassword().equals(user1.getPassword()))
-    //         return false;
-    //     return true;
-    // }
+    CustomerService customerService;
 
     @RequestMapping(value = "/customers", method = RequestMethod.GET)
     public List<Customer> getAllCustomers(){
-        return customerRepository.findAll();
+        return customerService.getAllCustomers();
     }
 
     @RequestMapping(value = "/customers", method = RequestMethod.POST)
     public void createCustomer(@RequestBody Customer customer){
-        customer.setCustomer_creation_date(LocalDate.now());
-        customerRepository.save(customer); 
+        customerService.createCustomer(customer);
     }
 
     @RequestMapping(value = "/customers/{id}", method = RequestMethod.GET)
-    public ResponseEntity<Customer> getCustomerById(@PathVariable Long id) throws ResourceNotFoundException{
-        Customer customer = customerRepository.findById(id)
-        .orElseThrow(() -> new ResourceNotFoundException("No Customer Record Found For Id: " + id));
-        return ResponseEntity.ok(customer);
+    public ResponseEntity<Customer> getCustomerById(@PathVariable Long id){
+        return customerService.getCustomerById(id);
     }
 
     @RequestMapping(value = "/customers/{id}", method = RequestMethod.PUT)
     public ResponseEntity<Customer> updateCustomer(@PathVariable Long id, @RequestBody Customer updatedCustomer){
-        
-        Customer customer = customerRepository.findById(id)
-        .orElseThrow(() -> new ResourceNotFoundException("No Customer Record Found For ID: " + id));
-
-        customer.setFirst_name(updatedCustomer.getFirst_name());
-        customer.setLast_name(updatedCustomer.getLast_name());
-        customer.setEmail_id(updatedCustomer.getEmail_id());
-        customer.setPhone_number(updatedCustomer.getPhone_number());
-
-        customerRepository.save(customer);
-        return ResponseEntity.ok(customer);
+        return customerService.updateCustomer(id, updatedCustomer);
     }
 
     @RequestMapping(value = "/customers/{id}", method = RequestMethod.DELETE)
     public ResponseEntity<String> deleteCustomer(@PathVariable Long id){
-        Customer customer = customerRepository.findById(id).
-        orElseThrow(() -> new ResourceNotFoundException(("No Customer Record Found For ID: " + id)));
-
-        customerRepository.delete(customer);
-        return ResponseEntity.ok("Customer Record Deleted Succesfully!");
+        return customerService.deleteCustomer(id);
     }
 
     @RequestMapping(value = "/customers/search/{parameter}/{value}", method = RequestMethod.GET)
     public ResponseEntity<List<Customer>> getCustomersBySearching(@PathVariable String parameter,@PathVariable String value){
-
-        List<Customer> searchResults;
-
-        if(parameter.equals("name")){
-            // firstName results are stored directly in searchResults
-            searchResults = customerRepository.findByFirstNameContaining(value);
-                List<Customer> lastNameResults = customerRepository.findByLastNameContaining(value);
-                for(Customer c: lastNameResults)
-                    searchResults.add(c);
-            }
-        else if(parameter.equals("phone_number")){
-            searchResults = customerRepository.findByPhoneNumberContaining(value);
-        }
-        else{
-            // parameter == email_id
-            searchResults = customerRepository.findByEmailIdContaining(value);
-        }
-
-        return ResponseEntity.ok(searchResults);
+        return customerService.getCustomersBySearching(parameter, value);
     }
 }
