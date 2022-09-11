@@ -1,4 +1,4 @@
-package com.cognizant.customer_detail_system.controller;
+package com.springdemo.customer_detail_system.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.cognizant.customer_detail_system.model.Customer;
-import com.cognizant.customer_detail_system.service.CustomerService;
+import com.springdemo.customer_detail_system.model.Customer;
+import com.springdemo.customer_detail_system.service.CustomerService;
 
 @CrossOrigin(origins = "http://localhost:3000/")
 @RestController
@@ -37,7 +37,7 @@ public class CustomerController {
     }
 
     @RequestMapping(value = "/customers/{id}", method = RequestMethod.PUT)
-    public ResponseEntity<Customer> updateCustomer(@PathVariable Long id, @RequestBody Customer updatedCustomer){
+    public ResponseEntity<String> updateCustomer(@PathVariable Long id, @RequestBody Customer updatedCustomer){
         return customerService.updateCustomer(id, updatedCustomer);
     }
 

@@ -1,5 +1,6 @@
-package com.cognizant.customer_detail_system.model;
+package com.springdemo.customer_detail_system.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -11,6 +12,7 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    @Column(unique=true)
     private String username;
     private String password;
     private String role;

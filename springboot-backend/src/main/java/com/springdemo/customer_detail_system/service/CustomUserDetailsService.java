@@ -1,4 +1,4 @@
-package com.cognizant.customer_detail_system.service;
+package com.springdemo.customer_detail_system.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -6,10 +6,10 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.cognizant.customer_detail_system.exception.ResourceNotFoundException;
-import com.cognizant.customer_detail_system.model.CustomUserDetails;
-import com.cognizant.customer_detail_system.model.User;
-import com.cognizant.customer_detail_system.repository.UserRepository;
+import com.springdemo.customer_detail_system.exception.ResourceNotFoundException;
+import com.springdemo.customer_detail_system.model.CustomUserDetails;
+import com.springdemo.customer_detail_system.model.User;
+import com.springdemo.customer_detail_system.repository.UserRepository;
 
 @Service
 public class CustomUserDetailsService implements UserDetailsService{

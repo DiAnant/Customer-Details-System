@@ -1,4 +1,4 @@
-package com.cognizant.customer_detail_system.model;
+package com.springdemo.customer_detail_system.model;
 
 import java.util.Arrays;
 import java.util.Collection;

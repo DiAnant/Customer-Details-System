@@ -1,4 +1,4 @@
-package com.cognizant.customer_detail_system.model;
+package com.springdemo.customer_detail_system.model;
 import java.time.LocalDate;
 
 import javax.persistence.Column;
@@ -22,16 +22,15 @@ public class Customer {
     @Column(name = "last_name")
     private String lastName;
 
-    @Column(name = "phone_number", length = 10)
+    @Column(name = "phone_number", length = 10, unique = true)
     private String phoneNumber;
 
-    @Column(name = "email_id")
+    @Column(name = "email_id", unique = true)
     private String emailId;
 
     @Column(name = "customer_creation_date")
     private LocalDate customerCreationDate;
 
-    
     public Customer(){
 
     }

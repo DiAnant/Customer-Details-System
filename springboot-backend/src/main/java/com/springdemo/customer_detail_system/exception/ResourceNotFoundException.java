@@ -1,4 +1,4 @@
-package com.cognizant.customer_detail_system.exception;
+package com.springdemo.customer_detail_system.exception;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 

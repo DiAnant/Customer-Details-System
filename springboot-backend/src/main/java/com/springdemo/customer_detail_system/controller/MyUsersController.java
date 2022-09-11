@@ -1,4 +1,4 @@
-package com.cognizant.customer_detail_system.controller;
+package com.springdemo.customer_detail_system.controller;
 
 import java.util.List;
 
@@ -9,8 +9,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import com.cognizant.customer_detail_system.model.User;
-import com.cognizant.customer_detail_system.service.MyUsersService;
+
+import com.springdemo.customer_detail_system.model.User;
+import com.springdemo.customer_detail_system.service.MyUsersService;
 
 @CrossOrigin(origins = "http://localhost:3000/")
 @RestController
@@ -30,4 +31,6 @@ public class MyUsersController {
     public ResponseEntity<String> createUser(@RequestBody User user){ 
         return myUsersService.createUser(user);
     }
+
+    
 }
