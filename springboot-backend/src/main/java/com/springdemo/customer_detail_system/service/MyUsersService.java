@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.springdemo.customer_detail_system.exception.BadCredentialsException;
 import com.springdemo.customer_detail_system.exception.ResourceAlreadyExistsException;
 import com.springdemo.customer_detail_system.model.User;
 import com.springdemo.customer_detail_system.repository.UserRepository;
@@ -32,5 +33,22 @@ public class MyUsersService {
         user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
         myUserRepository.save(user);
         return ResponseEntity.ok("User: " + user.getUsername() + " Successfully Registered");
+    }
+
+    public ResponseEntity<String> changePassword(String password, String newPassword, String username){
+        
+        // if this API is being called it means that username definitely exists and hence we don't need
+        // to check for that scenario. But we need to check if password is correct or not.
+
+        User user = myUserRepository.findByUsername(username).get();
+        if(!new BCryptPasswordEncoder().matches(password, user.getPassword())){
+            throw new BadCredentialsException("Incorrect Current Password. Please enter correct" + 
+            "current password of this account in order to reset password.");
+        }
+
+        user.setPassword(new BCryptPasswordEncoder().encode(newPassword));
+        myUserRepository.save(user);
+
+        return ResponseEntity.ok("Password successfully changed for User: " + username);
     }
 }

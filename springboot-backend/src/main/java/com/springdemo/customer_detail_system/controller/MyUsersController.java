@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.springdemo.customer_detail_system.model.User;
@@ -32,5 +33,11 @@ public class MyUsersController {
         return myUsersService.createUser(user);
     }
 
+    @RequestMapping(value = "/user/change-password", method = RequestMethod.POST)
+    public ResponseEntity<String> changePassword(@RequestParam String password,
+     @RequestParam String newPassword, @RequestParam String username){
+
+        return myUsersService.changePassword(password, newPassword, username);
+    }
     
 }
