@@ -93,9 +93,9 @@ public class SecurityConfiguration{
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable().
         authorizeRequests().        
-        antMatchers(HttpMethod.POST, "/api/v2/user/", "/api/v2/user").hasAuthority("ROOT").
+        antMatchers(HttpMethod.POST, "/api/v2/user/", "/api/v2/user", "/api/v2/user/change-role/**").hasAuthority("ROOT").
+        antMatchers(HttpMethod.GET, "/api/v2/user/", "/api/v2/user").hasAuthority("ROOT").
         antMatchers(HttpMethod.POST, "/api/v1/customers/", "/api/v1/customers").hasAnyAuthority("ADMIN", "ROOT").
-        antMatchers(HttpMethod.GET, "/api/v2/user/", "/api/v2/user").hasAnyAuthority("CUSTOMER", "ADMIN", "ROOT").
         antMatchers(HttpMethod.GET, "/api/v1/customers/", "/api/v1/customers").hasAnyAuthority("CUSTOMER", "ADMIN", "ROOT").
         anyRequest().
         authenticated().

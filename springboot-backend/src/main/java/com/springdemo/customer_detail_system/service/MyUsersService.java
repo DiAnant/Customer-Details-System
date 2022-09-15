@@ -8,7 +8,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.springdemo.customer_detail_system.exception.BadCredentialsException;
+import com.springdemo.customer_detail_system.exception.ForbiddenActionException;
 import com.springdemo.customer_detail_system.exception.ResourceAlreadyExistsException;
+import com.springdemo.customer_detail_system.exception.ResourceNotFoundException;
 import com.springdemo.customer_detail_system.model.User;
 import com.springdemo.customer_detail_system.repository.UserRepository;
 
@@ -37,10 +39,12 @@ public class MyUsersService {
 
     public ResponseEntity<String> changePassword(String password, String newPassword, String username){
         
-        // if this API is being called it means that username definitely exists and hence we don't need
-        // to check for that scenario. But we need to check if password is correct or not.
+        // validating username
+        User user = myUserRepository.findByUsername(username).
+        orElseThrow(() -> new ResourceNotFoundException("No user with username: " + username +
+        " exists in the database. Please choose a valid user"));
 
-        User user = myUserRepository.findByUsername(username).get();
+        // validating password
         if(!new BCryptPasswordEncoder().matches(password, user.getPassword())){
             throw new BadCredentialsException("Incorrect Current Password. Please enter correct" + 
             "current password of this account in order to reset password.");
@@ -50,5 +54,33 @@ public class MyUsersService {
         myUserRepository.save(user);
 
         return ResponseEntity.ok("Password successfully changed for User: " + username);
+    }
+
+    public ResponseEntity<String> changeRole(String username, String role){
+
+        // validating username
+        User user = myUserRepository.findByUsername(username).
+        orElseThrow(() -> new ResourceNotFoundException("No user with username: " + username +
+        " exists in the database. Please choose a valid user"));
+
+        // checking if username is not "root"
+        if(username.equals("root")){
+            throw new ForbiddenActionException("You cannot change ROLE for the root user.");
+        }
+
+        // validating role
+        if(role.equals("ROOT")){
+            throw new ForbiddenActionException("ROOT is a reserved role and cannot be" +
+             " assigned to any one else.");
+        }
+
+        if(!role.equals("ADMIN") && !role.equals("EMPLOYEE")){
+            throw new ForbiddenActionException("Please choose a role from the given options," +
+             " ADMIN & EMPLOYEE. Entered role: " + role + " is an incorrect choice");
+        }
+
+        user.setRole(role);
+        myUserRepository.save(user);
+        return ResponseEntity.ok("Role changed successfully to " + role + " for user - " + username);
     }
 }

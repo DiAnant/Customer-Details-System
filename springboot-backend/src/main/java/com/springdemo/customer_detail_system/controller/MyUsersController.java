@@ -33,6 +33,7 @@ public class MyUsersController {
         return myUsersService.createUser(user);
     }
 
+    // only the owner of that account can change thier password
     @RequestMapping(value = "/user/change-password", method = RequestMethod.POST)
     public ResponseEntity<String> changePassword(@RequestParam String password,
      @RequestParam String newPassword, @RequestParam String username){
@@ -40,4 +41,9 @@ public class MyUsersController {
         return myUsersService.changePassword(password, newPassword, username);
     }
     
+    // only root user should be allowed to change roles
+    @RequestMapping(value = "/user/change-role", method = RequestMethod.POST)
+    public ResponseEntity<String> changeRole(@RequestParam String username, @RequestParam String role){
+        return myUsersService.changeRole(username, role);
+    }
 }
