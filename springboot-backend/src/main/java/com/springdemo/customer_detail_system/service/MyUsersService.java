@@ -50,7 +50,7 @@ public class MyUsersService {
         // validating password
         if(!new BCryptPasswordEncoder().matches(password, user.getPassword())){
             throw new BadCredentialsException("Incorrect Current Password. Please enter correct" + 
-            "current password of this account in order to reset password.");
+            " current password of this account in order to reset password.");
         }
 
         user.setPassword(new BCryptPasswordEncoder().encode(newPassword));
@@ -91,7 +91,7 @@ public class MyUsersService {
         
         // validating username
         User user = myUserRepository.findByUsername(username).
-        orElseThrow(() -> new BadCredentialsException("No username: " + username + " found. Please enter a correct username!"));
+        orElseThrow(() -> new ResourceNotFoundException("No username: " + username + " found. Please enter a correct username!"));
         
         // validating password
         if(!new BCryptPasswordEncoder().matches(password, user.getPassword())){
