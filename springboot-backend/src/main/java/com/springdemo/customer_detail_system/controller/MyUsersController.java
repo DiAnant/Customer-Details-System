@@ -22,7 +22,6 @@ public class MyUsersController {
     @Autowired
     MyUsersService myUsersService;
     
-    // this API should later be deleted, serves no purpose
     @RequestMapping(value = "/user", method = RequestMethod.GET)
     public ResponseEntity<List<User>> getAllUsers(){
         return myUsersService.getAllUsers();
@@ -33,7 +32,7 @@ public class MyUsersController {
         return myUsersService.createUser(user);
     }
 
-    // only the owner of that account can change thier password
+    // only the owner of that account can change their password
     @RequestMapping(value = "/user/change-password", method = RequestMethod.POST)
     public ResponseEntity<String> changePassword(@RequestParam String password,
      @RequestParam String newPassword, @RequestParam String username){
@@ -45,5 +44,10 @@ public class MyUsersController {
     @RequestMapping(value = "/user/change-role", method = RequestMethod.POST)
     public ResponseEntity<String> changeRole(@RequestParam String username, @RequestParam String role){
         return myUsersService.changeRole(username, role);
+    }
+
+    @RequestMapping(value = "/user/login", method = RequestMethod.POST)
+    public ResponseEntity<Boolean> loginUser(@RequestParam String username, @RequestParam String password){
+        return myUsersService.loginUser(username, password);
     }
 }

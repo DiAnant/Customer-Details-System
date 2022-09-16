@@ -21,7 +21,10 @@ public class MyUsersService {
     private UserRepository myUserRepository;
     
     public ResponseEntity<List<User>> getAllUsers(){
-        return ResponseEntity.ok(myUserRepository.findAll());
+        List<User> userList = myUserRepository.findAll();
+        // making the password useless, as we don't want to send it to client (even hashed password)
+        userList.forEach(user -> user.setPassword("----"));
+        return ResponseEntity.ok(userList);
     }
 
     public ResponseEntity<String> createUser(User user) throws ResourceAlreadyExistsException{
@@ -64,7 +67,7 @@ public class MyUsersService {
         " exists in the database. Please choose a valid user"));
 
         // checking if username is not "root"
-        if(username.equals("root")){
+        if(username.equals("user_root")){
             throw new ForbiddenActionException("You cannot change ROLE for the root user.");
         }
 
@@ -82,5 +85,19 @@ public class MyUsersService {
         user.setRole(role);
         myUserRepository.save(user);
         return ResponseEntity.ok("Role changed successfully to " + role + " for user - " + username);
+    }
+
+    public ResponseEntity<Boolean> loginUser(String username, String password){
+        
+        // validating username
+        User user = myUserRepository.findByUsername(username).
+        orElseThrow(() -> new BadCredentialsException("No username: " + username + " found. Please enter a correct username!"));
+        
+        // validating password
+        if(!new BCryptPasswordEncoder().matches(password, user.getPassword())){
+            throw new BadCredentialsException("Incorrect Password. Please enter correct password to login!");
+        }        
+
+        return ResponseEntity.ok(true);
     }
 }
