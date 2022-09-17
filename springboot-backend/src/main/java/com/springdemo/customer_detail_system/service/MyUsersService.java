@@ -96,6 +96,7 @@ public class MyUsersService {
         // validating password
         if(!new BCryptPasswordEncoder().matches(password, user.getPassword())){
             throw new BadCredentialsException("Incorrect Password. Please enter correct password to login!");
+            // throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Incorrect Password. Please enter correct password to login!");
         }        
 
         return ResponseEntity.ok(true);
